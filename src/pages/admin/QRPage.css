@@ -1,0 +1,105 @@
+.qr-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.qr-page__header h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-black);
+}
+
+.qr-page__header p {
+    color: var(--color-text-secondary);
+}
+
+.qr-container {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+}
+
+.qr-card {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-8) !important;
+}
+
+.qr-card__code {
+    background: #fff;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.qr-card__info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.qr-card__info h3 {
+    font-size: var(--font-size-base);
+    color: var(--color-primary);
+}
+
+.qr-card__info p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.qr-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-success);
+    background: var(--color-success-bg);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+}
+
+.qr-instructions {
+    max-width: 400px;
+}
+
+.qr-instructions h3 {
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-6);
+}
+
+.instruction-step {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-glow);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+}
+
+.instruction-step p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-normal);
+}
+
+.instruction-step strong {
+    color: var(--color-text);
+}

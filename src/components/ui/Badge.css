@@ -1,0 +1,84 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+/* Tamaños */
+.badge--sm {
+    padding: 2px var(--space-2);
+    font-size: var(--font-size-xs);
+}
+
+.badge--md {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-sm);
+}
+
+.badge--lg {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-base);
+}
+
+/* Variantes de color */
+.badge--success {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+    border-color: var(--color-success-border);
+}
+
+.badge--danger {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+    border-color: var(--color-danger-border);
+}
+
+.badge--warning {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+    border-color: var(--color-warning-border);
+}
+
+.badge--info {
+    background: var(--color-info-bg);
+    color: var(--color-info);
+}
+
+.badge--pending {
+    background: var(--color-pending-bg);
+    color: var(--color-pending);
+}
+
+.badge--approved {
+    background: var(--color-approved-bg);
+    color: var(--color-approved);
+}
+
+.badge--rejected {
+    background: var(--color-rejected-bg);
+    color: var(--color-rejected);
+}
+
+.badge--neutral {
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+}
+
+/* Punto indicador */
+.badge__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.badge--success .badge__dot,
+.badge--approved .badge__dot {
+    animation: pulse 2s infinite;
+}

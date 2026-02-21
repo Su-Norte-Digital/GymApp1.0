@@ -1,0 +1,104 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.profile-page__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-extrabold);
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+.profile-hero__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid var(--color-primary-dim);
+    box-shadow: var(--shadow-primary);
+}
+
+.profile-hero__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.profile-hero__info h2 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+}
+
+.profile-hero__info p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.profile-details__title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: var(--space-4);
+}
+
+.profile-details__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.profile-details__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.profile-details__item:last-child {
+    border-bottom: none;
+}
+
+.profile-details__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.profile-details__value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+.profile-msg {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+}
+
+.profile-msg--success {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+    border: 1px solid var(--color-success-border);
+}
+
+.profile-msg--error {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger-border);
+}

@@ -1,0 +1,63 @@
+.card {
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
+}
+
+/* Padding variants */
+.card--pad-none {
+    padding: 0;
+}
+
+.card--pad-sm {
+    padding: var(--space-3);
+}
+
+.card--pad-md {
+    padding: var(--space-5);
+}
+
+.card--pad-lg {
+    padding: var(--space-6) var(--space-8);
+}
+
+/* Style variants */
+.card--glass {
+    background: rgba(26, 26, 26, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: var(--color-border-strong);
+}
+
+.card--elevated {
+    background: var(--color-surface-2);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+}
+
+.card--bordered {
+    background: transparent;
+    border-color: var(--color-border-strong);
+}
+
+.card--primary {
+    background: var(--color-primary-glow);
+    border-color: var(--color-primary-border);
+}
+
+/* Clickable */
+.card--clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.card--clickable:hover {
+    border-color: var(--color-primary-border);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card--clickable:active {
+    transform: translateY(0);
+}

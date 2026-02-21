@@ -1,0 +1,40 @@
+.spinner {
+    display: inline-block;
+    border-radius: var(--radius-full);
+    border-style: solid;
+    border-top-color: transparent !important;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+/* Tamaños */
+.spinner--sm {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+}
+
+.spinner--md {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+}
+
+.spinner--lg {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+}
+
+/* Colores */
+.spinner--primary {
+    border-color: var(--color-primary);
+}
+
+.spinner--light {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.spinner--dark {
+    border-color: rgba(0, 0, 0, 0.6);
+}

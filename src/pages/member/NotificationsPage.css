@@ -1,0 +1,89 @@
+.notifs-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.notifs-page__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-extrabold);
+}
+
+.notifs-loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-10);
+}
+
+.notifs-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-12) var(--space-4);
+    text-align: center;
+}
+
+.notifs-empty__icon {
+    font-size: 3.5rem;
+}
+
+.notifs-empty h2 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+}
+
+.notifs-empty p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.notifs-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.notif-card {
+    overflow: hidden;
+}
+
+.notif-card__img {
+    margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-4);
+}
+
+.notif-card__img img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.notif-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.notif-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notif-card__date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.notif-card__title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+}
+
+.notif-card__msg {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}

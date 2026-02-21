@@ -1,0 +1,115 @@
+.input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.input-field {
+    width: 100%;
+    height: 56px;
+    padding: 18px var(--space-4) 6px;
+    background: var(--color-surface-2);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    transition: all var(--transition-fast);
+    outline: none;
+    appearance: none;
+}
+
+/* Padding con íconos */
+.input-field--pad-left {
+    padding-left: calc(var(--space-4) * 2.5 + 2px);
+}
+
+.input-field--pad-right {
+    padding-right: calc(var(--space-4) * 2.5 + 2px);
+}
+
+.input-field::placeholder {
+    color: transparent;
+}
+
+.input-field:focus {
+    border-color: var(--color-primary);
+    background: var(--color-surface-3);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+/* Label flotante */
+.input-label {
+    position: absolute;
+    left: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    pointer-events: none;
+    transition: all var(--transition-fast);
+    transform-origin: left center;
+}
+
+/* Label sube cuando hay contenido o focus */
+.input-field:focus+.input-label,
+.input-field:not(:placeholder-shown)+.input-label {
+    top: 10px;
+    transform: translateY(0) scale(0.78);
+    color: var(--color-primary);
+}
+
+/* Ícono izquierdo desplaza label */
+.input-wrapper:has(.input-icon--left) .input-label {
+    left: calc(var(--space-4) * 2.5 + 2px);
+}
+
+/* Estado error */
+.input-wrapper--error .input-field {
+    border-color: var(--color-danger);
+}
+
+.input-wrapper--error .input-field:focus {
+    box-shadow: 0 0 0 3px var(--color-danger-bg);
+}
+
+.input-wrapper--error .input-field:focus+.input-label,
+.input-wrapper--error .input-field:not(:placeholder-shown)+.input-label {
+    color: var(--color-danger);
+}
+
+/* Íconos laterales */
+.input-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.input-icon--left {
+    left: var(--space-4);
+}
+
+.input-icon--right {
+    right: var(--space-4);
+}
+
+/* Mensajes */
+.input-message {
+    font-size: var(--font-size-xs);
+    margin-top: var(--space-1);
+    padding-left: var(--space-1);
+}
+
+.input-message--error {
+    color: var(--color-danger);
+}
+
+.input-message--hint {
+    color: var(--color-text-muted);
+}
