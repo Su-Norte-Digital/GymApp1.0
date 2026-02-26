@@ -15,22 +15,30 @@ export function AuthProvider({ children }) {
     const [authError, setAuthError] = useState(null)
 
     // Cargar perfil del usuario autenticado
-    async function loadProfile(authUser) {
-        console.log('[Auth] Cargando perfil para ID:', authUser.id)
+    async function loadProfile(authUser, isRefresh = false) {
         if (!authUser) {
             console.log('[Auth] No hay usuario, limpiando perfil')
             setProfile(null)
             return
         }
+
+        console.log(`[Auth] ${isRefresh ? 'Refrescando' : 'Cargando'} perfil para ID:`, authUser.id)
+
         try {
-            setAuthError(null)
             const profileData = await getProfile(authUser.id)
             console.log('[Auth] Perfil cargado exitosamente:', profileData)
             setProfile(profileData)
+            setAuthError(null)
         } catch (err) {
             console.error('[Auth] Error al cargar perfil de Supabase:', err)
+
+            // Si es un refresco y falla por red/timeout, NO borramos el perfil anterior
+            // para evitar que la UI se rompa si ya teníamos datos.
+            if (!isRefresh || (err.message !== 'TIMEOUT_EXCEEDED' && !err.message?.includes('fetch'))) {
+                setProfile(null)
+            }
+
             setAuthError(err.message || 'Error al cargar perfil')
-            setProfile(null)
         }
     }
 
@@ -74,7 +82,9 @@ export function AuthProvider({ children }) {
                 try {
                     setUser(authUser)
                     if (authUser) {
-                        await loadProfile(authUser)
+                        await loadProfile(authUser, true) // Marcamos como refresh
+                    } else {
+                        setProfile(null)
                     }
                 } catch (err) {
                     console.error('[Auth] Error al procesar cambio de sesión:', err)
@@ -158,7 +168,15 @@ export function AuthProvider({ children }) {
         signup,
         loginWithMagicLink,
         logout,
-        refreshProfile: () => loadProfile(user),
+        refreshProfile: async () => {
+            setLoading(true)
+            const { data: { user: currentUser } } = await supabase.auth.getUser()
+            if (currentUser) {
+                setUser(currentUser)
+                await loadProfile(currentUser, true)
+            }
+            setLoading(false)
+        },
     }
 
     return (

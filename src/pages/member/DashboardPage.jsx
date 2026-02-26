@@ -8,22 +8,41 @@ import Spinner from '../../components/ui/Spinner'
 import './DashboardPage.css'
 
 function DashboardPage() {
-    const { profile } = useAuth()
+    const { profile, loading, authError, refreshProfile } = useAuth()
     const [notifications, setNotifications] = useState([])
     const [loadingNotifs, setLoadingNotifs] = useState(true)
 
     useEffect(() => {
         if (!profile) return
+        setLoadingNotifs(true)
         getNotificationsForUser(profile.id)
             .then(setNotifications)
             .catch(console.error)
             .finally(() => setLoadingNotifs(false))
     }, [profile])
 
-    if (!profile) {
+    // Si está cargando inicialmente
+    if (loading && !profile) {
         return (
             <div className="dashboard-loading">
                 <Spinner size="lg" />
+            </div>
+        )
+    }
+
+    // Si falló la carga del perfil
+    if (!profile) {
+        return (
+            <div className="dashboard-error animate-fade-in">
+                <div className="dashboard-error__icon">📡</div>
+                <h2>No pudimos cargar tus datos</h2>
+                <p>{authError || 'Hubo un problema de conexión con el servidor.'}</p>
+                <button
+                    className="dashboard-error__retry-btn"
+                    onClick={() => refreshProfile()}
+                >
+                    Reintentar conexión
+                </button>
             </div>
         )
     }

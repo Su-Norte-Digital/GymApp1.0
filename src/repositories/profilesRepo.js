@@ -22,7 +22,7 @@ export async function getProfile(userId) {
                 .select('*')
                 .eq('id', userId)
                 .single(),
-            timeout(8000) // 8 segundos de espera máxima
+            timeout(12000) // Aumentamos a 12 segundos
         ])
 
         if (error) {
