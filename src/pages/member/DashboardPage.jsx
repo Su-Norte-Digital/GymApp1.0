@@ -60,6 +60,19 @@ function DashboardPage() {
 
     return (
         <div className="dashboard animate-fade-in">
+            <header className="dashboard-header animate-fade-in">
+                <div className="dashboard-header__welcome">
+                    <h1>Hola, {profile.nombre.split(' ')[0]}</h1>
+                    <p className="text-muted">Estado actual de tu cuota</p>
+                </div>
+                {loading && (
+                    <div className="dashboard-header__refreshing">
+                        <Spinner size="sm" />
+                        <span>Actualizando...</span>
+                    </div>
+                )}
+            </header>
+
             {/* Saludo */}
             <section className="dashboard-greeting">
                 <div>

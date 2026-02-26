@@ -18,7 +18,15 @@ const authTimeout = (promise, ms = 10000) => Promise.race([
  */
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
-    const [profile, setProfile] = useState(null)
+    // Inicializamos el perfil desde el cache local para carga instantánea
+    const [profile, setProfile] = useState(() => {
+        try {
+            const cached = localStorage.getItem('gym_cached_profile')
+            return cached ? JSON.parse(cached) : null
+        } catch (e) {
+            return null
+        }
+    })
     const [loading, setLoading] = useState(true)
     const [authError, setAuthError] = useState(null)
 
@@ -37,6 +45,11 @@ export function AuthProvider({ children }) {
             console.log('[Auth] Perfil cargado exitosamente:', profileData)
             setProfile(profileData)
             setAuthError(null)
+
+            // Guardamos en cache local
+            if (profileData) {
+                localStorage.setItem('gym_cached_profile', JSON.stringify(profileData))
+            }
         } catch (err) {
             console.error('[Auth] Error al cargar perfil de Supabase:', err)
 
@@ -44,6 +57,7 @@ export function AuthProvider({ children }) {
             // para evitar que la UI se rompa si ya teníamos datos.
             if (!isRefresh || (err.message !== 'TIMEOUT_EXCEEDED' && !err.message?.includes('fetch'))) {
                 setProfile(null)
+                localStorage.removeItem('gym_cached_profile')
             }
 
             setAuthError(err.message || 'Error al cargar perfil')
@@ -93,7 +107,6 @@ export function AuthProvider({ children }) {
                 clearTimeout(safetyValve)
                 if (mounted) {
                     setLoading(false)
-                    console.log('[Auth] Proceso de inicialización terminado')
                 }
             }
         }
@@ -117,13 +130,29 @@ export function AuthProvider({ children }) {
                     setUser(null)
                     setProfile(null)
                     setLoading(false)
+                    localStorage.removeItem('gym_cached_profile')
                 }
             }
         )
 
+        // Refresco automático al reanudar la app (focus)
+        const handleFocus = () => {
+            console.log('[Auth] App retomó foco, verificando sesión...')
+            // Solo refrescamos si ya tenemos una sesión previa (silent refresh)
+            const cached = localStorage.getItem('gym_cached_profile')
+            if (cached) {
+                supabase.auth.getUser().then(({ data }) => {
+                    if (data?.user) loadProfile(data.user, true)
+                })
+            }
+        }
+
+        window.addEventListener('focus', handleFocus)
+
         return () => {
             mounted = false
             subscription.unsubscribe()
+            window.removeEventListener('focus', handleFocus)
         }
     }, [])
 
@@ -182,6 +211,7 @@ export function AuthProvider({ children }) {
         if (error) throw error
         setUser(null)
         setProfile(null)
+        localStorage.removeItem('gym_cached_profile')
     }
 
     const value = {

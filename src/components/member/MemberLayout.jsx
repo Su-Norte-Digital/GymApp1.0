@@ -62,7 +62,9 @@ function MemberLayout() {
                     <span>GymApp</span>
                 </div>
                 <div className="member-header__user">
-                    <span className="member-header__name">{profile?.nombre?.split(' ')[0]}</span>
+                    <span className="member-header__name">
+                        {profile?.nombre ? profile.nombre.split(' ')[0] : '...'}
+                    </span>
                     <div className="member-header__avatar">
                         {profile?.nombre?.charAt(0).toUpperCase() || '?'}
                     </div>
