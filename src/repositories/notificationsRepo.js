@@ -5,15 +5,31 @@ import { supabase } from '../lib/supabaseClient'
  * Maneja avisos generales e individuales del gimnasio
  */
 
-export async function getNotificationsForUser(userId) {
-    const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .or(`tipo.eq.general,and(tipo.eq.individual,target_user_id.eq.${userId})`)
-        .order('created_at', { ascending: false })
+const timeout = (ms) => new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), ms)
+);
 
-    if (error) throw error
-    return data
+export async function getNotificationsForUser(userId) {
+    console.log('[Repo/Notifs] Buscando avisos para:', userId)
+    try {
+        const { data, error } = await Promise.race([
+            supabase
+                .from('notifications')
+                .select('*')
+                .or(`tipo.eq.general,and(tipo.eq.individual,target_user_id.eq.${userId})`)
+                .order('created_at', { ascending: false }),
+            timeout(8000)
+        ])
+
+        if (error) {
+            console.error('[Repo/Notifs] Error en fetch:', error)
+            throw error
+        }
+        return data
+    } catch (err) {
+        console.error('[Repo/Notifs] Error o timeout:', err)
+        throw err
+    }
 }
 
 export async function getAllNotifications() {

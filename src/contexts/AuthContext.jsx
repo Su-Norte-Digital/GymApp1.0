@@ -5,6 +5,14 @@ import { getProfile, createProfile } from '../repositories/profilesRepo'
 const AuthContext = createContext(null)
 
 /**
+ * Helper para timeouts en llamadas de Auth
+ */
+const authTimeout = (promise, ms = 10000) => Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('AUTH_TIMEOUT')), ms))
+]);
+
+/**
  * AuthProvider - Provee estado de autenticación global
  * Expone: user, profile, loading, login, signup, loginWithMagicLink, logout
  */
@@ -48,8 +56,18 @@ export function AuthProvider({ children }) {
         async function initializeAuth() {
             setLoading(true)
             console.log('[Auth] Inicializando sesión...')
+
+            // Válvula de seguridad global: si nada responde en 15s, forzamos el fin de la carga
+            const safetyValve = setTimeout(() => {
+                if (mounted) {
+                    console.warn('[Auth] Válvula de seguridad activada (15s). Forzando fin de carga.')
+                    setLoading(false)
+                }
+            }, 15000)
+
             try {
-                const { data: { session }, error } = await supabase.auth.getSession()
+                // Envolvemos getSession en un timeout
+                const { data: { session }, error } = await authTimeout(supabase.auth.getSession())
                 if (error) throw error
 
                 const authUser = session?.user ?? null
@@ -63,7 +81,11 @@ export function AuthProvider({ children }) {
                 }
             } catch (err) {
                 console.error('[Auth] Error al obtener sesión inicial:', err)
+                if (err.message === 'AUTH_TIMEOUT') {
+                    console.error('[Auth] Timeout en getSession. Es posible que la red esté caída o la conexión colgada.')
+                }
             } finally {
+                clearTimeout(safetyValve)
                 if (mounted) {
                     setLoading(false)
                     console.log('[Auth] Carga inicial finalizada')
@@ -169,13 +191,21 @@ export function AuthProvider({ children }) {
         loginWithMagicLink,
         logout,
         refreshProfile: async () => {
+            console.log('[Auth] Refresh manual solicitado')
             setLoading(true)
-            const { data: { user: currentUser } } = await supabase.auth.getUser()
-            if (currentUser) {
-                setUser(currentUser)
-                await loadProfile(currentUser, true)
+            try {
+                // Envolvemos getUser en un timeout
+                const { data: { user: currentUser } } = await authTimeout(supabase.auth.getUser(), 8000)
+                if (currentUser) {
+                    setUser(currentUser)
+                    await loadProfile(currentUser, true)
+                }
+            } catch (err) {
+                console.error('[Auth] Error en refresh manual:', err)
+                setAuthError(err.message === 'AUTH_TIMEOUT' ? 'Tiempo de espera de autenticación agotado' : err.message)
+            } finally {
+                setLoading(false)
             }
-            setLoading(false)
         },
     }
 
