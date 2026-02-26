@@ -52,43 +52,48 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         let mounted = true
+        let hasInitialized = false
 
         async function initializeAuth() {
-            setLoading(true)
-            console.log('[Auth] Inicializando sesión...')
+            if (hasInitialized) return
+            hasInitialized = true
 
-            // Válvula de seguridad global: si nada responde en 15s, forzamos el fin de la carga
+            console.log('[Auth] Inicializando sesión...')
+            setLoading(true)
+
+            // Válvula de seguridad global (Watchdog): Máximo 20s de espera total
             const safetyValve = setTimeout(() => {
                 if (mounted) {
-                    console.warn('[Auth] Válvula de seguridad activada (15s). Forzando fin de carga.')
+                    console.warn('[Auth] Válvula de seguridad GLOBAL activada. Forzando fin de carga.')
                     setLoading(false)
                 }
-            }, 15000)
+            }, 20000)
 
             try {
-                // Envolvemos getSession en un timeout
-                const { data: { session }, error } = await authTimeout(supabase.auth.getSession())
-                if (error) throw error
+                // Usamos getUser() en lugar de getSession() para asegurar que la sesión es válida 
+                // y evitar cuelgues de caché en navegadores móviles.
+                const { data: { user: authUser }, error } = await authTimeout(supabase.auth.getUser(), 12000)
 
-                const authUser = session?.user ?? null
-                console.log('[Auth] Sesión inicial obtenida:', authUser ? authUser.email : 'Nula')
-
-                if (mounted) {
+                if (error) {
+                    console.warn('[Auth] Error/Sesión no encontrada al iniciar:', error.message)
+                    if (mounted) {
+                        setUser(null)
+                        setProfile(null)
+                    }
+                } else if (mounted) {
+                    console.log('[Auth] Usuario detectado:', authUser?.email)
                     setUser(authUser)
                     if (authUser) {
                         await loadProfile(authUser)
                     }
                 }
             } catch (err) {
-                console.error('[Auth] Error al obtener sesión inicial:', err)
-                if (err.message === 'AUTH_TIMEOUT') {
-                    console.error('[Auth] Timeout en getSession. Es posible que la red esté caída o la conexión colgada.')
-                }
+                console.error('[Auth] Error crítico en inicialización:', err.message)
             } finally {
                 clearTimeout(safetyValve)
                 if (mounted) {
                     setLoading(false)
-                    console.log('[Auth] Carga inicial finalizada')
+                    console.log('[Auth] Proceso de inicialización terminado')
                 }
             }
         }
@@ -97,20 +102,20 @@ export function AuthProvider({ children }) {
 
         // Listener de cambios de sesión
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            async (_event, session) => {
-                console.log('[Auth] Cambio de estado detectado:', _event)
+            async (event, session) => {
+                console.log('[Auth] Evento de sesión:', event)
                 const authUser = session?.user ?? null
 
-                try {
+                // Solo actuamos si el usuario realmente cambió o si es un refresh importante
+                if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                     setUser(authUser)
                     if (authUser) {
-                        await loadProfile(authUser, true) // Marcamos como refresh
-                    } else {
-                        setProfile(null)
+                        await loadProfile(authUser, true)
                     }
-                } catch (err) {
-                    console.error('[Auth] Error al procesar cambio de sesión:', err)
-                } finally {
+                    setLoading(false)
+                } else if (event === 'SIGNED_OUT') {
+                    setUser(null)
+                    setProfile(null)
                     setLoading(false)
                 }
             }
