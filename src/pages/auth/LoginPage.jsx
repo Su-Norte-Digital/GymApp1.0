@@ -24,8 +24,17 @@ function LoginPage() {
         setLoading(true)
         try {
             const { user: authUser } = await login(email, password)
-            // La redirección la maneja App.jsx según el rol del perfil
-            navigate('/dashboard', { replace: true })
+            console.log('[Login] Éxito para:', authUser.email)
+
+            // Esperamos un momento a que el AuthContext cargue el perfil
+            // (que se dispara por el onAuthStateChange)
+            // En una app real, el login podría devolver el perfil, pero aquí
+            // dependemos del listener global.
+
+            // Navegamos al panel administrativo. 
+            // El PrivateRoute se encargará de validar si realmente es admin.
+            console.log('[Login] Redirigiendo a /admin para validación de rol...')
+            navigate('/admin', { replace: true })
         } catch (err) {
             setError(
                 err.message === 'Invalid login credentials'

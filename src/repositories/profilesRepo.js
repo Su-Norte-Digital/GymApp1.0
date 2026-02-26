@@ -5,15 +5,40 @@ import { supabase } from '../lib/supabaseClient'
  * Todos los métodos propagan errores hacia arriba para manejo en la UI
  */
 
-export async function getProfile(userId) {
-    const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
+/**
+ * Helper para timeout de promesas
+ */
+const timeout = (ms) => new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), ms)
+);
 
-    if (error) throw error
-    return data
+export async function getProfile(userId) {
+    console.log('[Repo/Profiles] Iniciando select getProfile para:', userId)
+    try {
+        // Ejecutamos la promesa de Supabase con un límite de 8 segundos
+        const { data, error } = await Promise.race([
+            supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', userId)
+                .single(),
+            timeout(8000) // 8 segundos de espera máxima
+        ])
+
+        if (error) {
+            console.error('[Repo/Profiles] Error en select:', error)
+            throw error
+        }
+        console.log('[Repo/Profiles] Data recibida:', data)
+        return data
+    } catch (err) {
+        if (err.message === 'TIMEOUT_EXCEEDED') {
+            console.error('[Repo/Profiles] Error: La base de datos tardó demasiado en responder.')
+        } else {
+            console.error('[Repo/Profiles] Catch en getProfile:', err)
+        }
+        throw err
+    }
 }
 
 export async function createProfile(profileData) {
