@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
-import logo from '../../assets/logo.png'
 import './LoginPage.css'
 
 function LoginPage() {
@@ -71,7 +70,7 @@ function LoginPage() {
 
             <div className="login-container">
                 <div className="login-logo">
-                    <img src={logo} alt="GymApp" className="login-logo__img" />
+                    <img src="/logo.png" alt="GymApp" className="login-logo__img" />
                 </div>
 
                 <div className="login-card">

@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import logo from '../../assets/logo.png'
+import { useAuth } from '../../contexts/AuthContext'
 import './MemberLayout.css'
 
 const navItems = [
@@ -55,12 +55,8 @@ function MemberLayout() {
         <div className="member-layout">
             {/* Header */}
             <header className="member-header">
-                <div className="member-header__left">
-                    {/* Placeholder para balancear el centrado */}
-                </div>
-
                 <div className="member-header__brand">
-                    <img src={logo} alt="GymApp" className="member-header__logo" />
+                    <img src="/logo.png" alt="GymApp" className="member-header__logo" />
                 </div>
 
                 <div className="member-header__user">

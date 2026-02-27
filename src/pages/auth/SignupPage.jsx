@@ -77,7 +77,7 @@ function SignupPage() {
 
             <div className="signup-container animate-slide-up">
                 <div className="signup-logo">
-                    <img src={logo} alt="GymApp" className="signup-logo__img" />
+                    <img src="/logo.png" alt="GymApp" className="signup-logo__img" />
                 </div>
 
                 <div className="signup-card">

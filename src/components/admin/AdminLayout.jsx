@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import logo from '../../assets/logo.png'
 import './AdminLayout.css'
 
 const navItems = [
@@ -66,7 +65,7 @@ function AdminLayout() {
             <aside className={`admin-sidebar ${menuOpen ? 'admin-sidebar--open' : ''}`}>
                 <div className="admin-sidebar__header">
                     <div className="admin-sidebar__brand">
-                        <img src={logo} alt="GymApp" className="admin-sidebar__logo" />
+                        <img src="/logo.png" alt="GymApp" className="admin-sidebar__logo" />
                         <div>
                             <span className="admin-sidebar__title">GymApp</span>
                             <span className="admin-sidebar__subtitle">Panel Admin</span>
@@ -120,25 +119,23 @@ function AdminLayout() {
             <div className="admin-main">
                 {/* Header mobile */}
                 <header className="admin-header">
-                    <div className="admin-header__left">
-                        <button
-                            className="admin-header__menu-btn"
-                            onClick={() => setMenuOpen(!menuOpen)}
-                            aria-label="Menú"
-                        >
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <line x1="3" y1="12" x2="21" y2="12" />
-                                <line x1="3" y1="6" x2="21" y2="6" />
-                                <line x1="3" y1="18" x2="21" y2="18" />
-                            </svg>
-                        </button>
+                    <button
+                        className="admin-header__menu-btn"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label="Menú"
+                    >
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+
+                    <div className="admin-header__brand">
+                        <img src="/logo.png" alt="GymApp" className="admin-header__logo" />
                     </div>
 
-                    <div className="admin-header__center">
-                        <img src={logo} alt="GymApp" className="admin-header__logo" />
-                    </div>
-
-                    <div className="admin-header__right">
+                    <div className="admin-header__user">
                         <div className="admin-header__avatar">
                             {profile?.nombre?.charAt(0).toUpperCase() || 'A'}
                         </div>
