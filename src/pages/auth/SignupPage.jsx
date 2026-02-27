@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
+import logo from '../../assets/logo.png'
 import './SignupPage.css'
 
 function SignupPage() {
@@ -76,13 +77,7 @@ function SignupPage() {
 
             <div className="signup-container animate-slide-up">
                 <div className="signup-logo">
-                    <div className="signup-logo__icon">
-                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-                            <rect width="32" height="32" rx="10" fill="#AAFF00" />
-                            <path d="M8 16h3v6H8v-6zM21 10h3v12h-3V10zM14 13h4v9h-4v-9z" fill="#0D0D0D" />
-                        </svg>
-                    </div>
-                    <span className="signup-logo__text">GymApp</span>
+                    <img src={logo} alt="GymApp" className="signup-logo__img" />
                 </div>
 
                 <div className="signup-card">

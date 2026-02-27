@@ -30,6 +30,12 @@
     gap: var(--space-3);
 }
 
+.admin-sidebar__logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
+
 .admin-sidebar__title {
     display: block;
     font-size: var(--font-size-md);
@@ -167,16 +173,37 @@
 /* ── Header Mobile ── */
 .admin-header {
     display: none;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     padding: 0 var(--space-4);
-    height: 60px;
+    height: 70px;
     background: rgba(13, 13, 13, 0.9);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 100;
+}
+
+.admin-header__left {
+    display: flex;
+    align-items: center;
+}
+
+.admin-header__center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-header__logo {
+    height: 44px;
+    width: auto;
+}
+
+.admin-header__right {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .admin-header__menu-btn {
@@ -186,11 +213,8 @@
     background: none;
     border: none;
     cursor: pointer;
-}
-
-.admin-header__title {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+    padding: var(--space-2);
+    margin-left: calc(-1 * var(--space-2));
 }
 
 .admin-header__avatar {

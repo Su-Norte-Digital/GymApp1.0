@@ -53,21 +53,15 @@
 /* Logo */
 .login-logo {
     display: flex;
-    align-items: center;
-    gap: var(--space-3);
     justify-content: center;
-}
-
-.login-logo__icon {
-    display: flex;
     align-items: center;
+    margin-bottom: var(--space-2);
 }
 
-.login-logo__text {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-black);
-    color: var(--color-text);
-    letter-spacing: -0.5px;
+.login-logo__img {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* Card principal */
